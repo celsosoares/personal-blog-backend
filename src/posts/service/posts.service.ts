@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
+import { CreatePostDto } from '../dto/create-post.dto';
+import { UpdatePostDto } from '../dto/update-post.dto';
 
 @Injectable()
 export class PostsService {
   create(createPostDto: CreatePostDto) {
-    return 'This action adds a new post';
+    return 'This action adds a new post' + createPostDto;
   }
 
   findAll() {
@@ -17,7 +17,7 @@ export class PostsService {
   }
 
   update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+    return `This action updates a #${id} post` + updatePostDto;
   }
 
   remove(id: number) {
