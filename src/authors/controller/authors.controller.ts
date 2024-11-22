@@ -26,7 +26,6 @@ export class AuthorsController {
   }
 
   @Get(':id')
-  // findOne(@Param('id') id: string) {
   findOne(@Param('id') id: string) {
     // return this.authorsService.findOne(id);
     console.log(id);
