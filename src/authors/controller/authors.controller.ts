@@ -15,32 +15,31 @@ import { UpdateAuthorDto } from '../dto/update-author.dto';
 export class AuthorsController {
   constructor(private readonly authorsService: AuthorsService) {}
 
-  @Post()
-  create(@Body() createAuthorDto: CreateAuthorDto) {
-    return this.authorsService.create(createAuthorDto);
-  }
-
   @Get()
-  findAll() {
+  async findAll() {
     return this.authorsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    // return this.authorsService.findOne(id);
-    console.log(id);
-    return this.authorsService.findOne();
+  async findOne(@Param('id') id: string) {
+    return this.authorsService.findOne(id);
+  }
+
+  @Post()
+  async create(@Body() createAuthorDto: CreateAuthorDto) {
+    return this.authorsService.create(createAuthorDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateAuthorDto: UpdateAuthorDto,
+  ) {
     return this.authorsService.update(id, updateAuthorDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    console.log(id);
-    // return this.authorsService.remove(id);
-    return this.authorsService.remove();
+  async remove(@Param('id') id: string) {
+    return this.authorsService.remove(id);
   }
 }

@@ -5,5 +5,4 @@ RUN apk add --no-cache bash
 RUN yarn global add @nestjs/cli
 
 USER node
-
-WORKDIR  /home/node/app
+WORKDIR /home/node/app

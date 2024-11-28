@@ -6,6 +6,18 @@ services:
     entrypoint: .docker/entrypoint.sh
     container_name: personal-blog-backend
     ports:
-      - "3042:3042"
+      - "3000:3000"
     volumes:
       - .:/home/node/app
+
+  db:
+    image: postgres:15
+    container_name: personal-blog-db
+    restart: always
+    ports: 
+      - "5432:5432"
+    volumes:
+      - .docker/dbdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: personal-blog

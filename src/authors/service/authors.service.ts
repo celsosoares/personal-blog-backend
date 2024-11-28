@@ -1,39 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAuthorDto } from '../dto/create-author.dto';
 import { UpdateAuthorDto } from '../dto/update-author.dto';
-// import { InjectRepository } from '@nestjs/typeorm';
-// import { Author } from '../entities/author.entity';
-// import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Author } from '../entities/author.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthorsService {
-  // constructor(
-  //   @InjectRepository(Author)
-  //   private authorsRepository: Repository<Author>,
-  // ) {}
+  constructor(
+    @InjectRepository(Author)
+    private authorsRepository: Repository<Author>,
+  ) {}
 
-  create(createAuthorDto: CreateAuthorDto) {
-    return 'This action adds a new author' + createAuthorDto;
+  async findAll() {
+    return await this.authorsRepository.find();
   }
 
-  findAll() {
-    // return this.authorsRepository.find();
-    return 'Print findAll';
+  async findOne(id: string) {
+    const author = await this.authorsRepository.findOneBy({ id });
+    if (!author) {
+      throw new NotFoundException(`Author ID ${id} not found`);
+    }
+    return author;
   }
 
-  // findOne(id: string) {
-  findOne() {
-    // return this.authorsRepository.findOneBy({ id });
-    return 'Print findOne';
+  async create(createAuthorDto: CreateAuthorDto) {
+    const author = this.authorsRepository.create(createAuthorDto);
+    return this.authorsRepository.save(author);
   }
 
-  update(id: string, updateAuthorDto: UpdateAuthorDto) {
-    return `This action updates a #${id} author` + updateAuthorDto;
+  async update(id: string, updateAuthorDto: UpdateAuthorDto) {
+    const author = await this.authorsRepository.preload({
+      ...updateAuthorDto,
+      id,
+    });
+    if (!author) {
+      throw new NotFoundException(`Author ID ${id} not found`);
+    }
+    return this.authorsRepository.save(author);
   }
 
-  // remove(id: string) {
-  remove() {
-    // return this.authorsRepository.delete(id);
-    return 'Print remove';
+  async remove(id: string) {
+    return await this.authorsRepository.delete(id);
   }
 }
