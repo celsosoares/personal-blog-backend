@@ -1,8 +1,11 @@
+import { Author } from 'src/authors/entities/author.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -12,8 +15,12 @@ export class Post {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  authorId: string;
+  @ManyToOne(() => Author, (author) => author.posts, {
+    onDelete: 'CASCADE',
+    eager: true,
+  })
+  @JoinColumn({ name: 'authorId' })
+  author: Author;
 
   @Column()
   title: string;
