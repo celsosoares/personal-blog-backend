@@ -16,30 +16,30 @@ export class AuthorsController {
   constructor(private readonly authorsService: AuthorsService) {}
 
   @Get()
-  async findAll() {
-    return this.authorsService.findAll();
+  async getAuthors() {
+    return this.authorsService.getAuthors();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.authorsService.findOne(id);
+  async getAuthorById(@Param('id') id: string) {
+    return this.authorsService.getAuthorById(id);
   }
 
   @Post()
-  async create(@Body() createAuthorDto: CreateAuthorDto) {
-    return this.authorsService.create(createAuthorDto);
+  async createAuthor(@Body() createAuthorDto: CreateAuthorDto) {
+    return this.authorsService.createAuthor(createAuthorDto);
   }
 
   @Patch(':id')
-  async update(
+  async updateAuthor(
     @Param('id') id: string,
     @Body() updateAuthorDto: UpdateAuthorDto,
   ) {
-    return this.authorsService.update(id, updateAuthorDto);
+    return this.authorsService.updateAuthor(id, updateAuthorDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.authorsService.remove(id);
+  async removeAuthorById(@Param('id') id: string) {
+    return this.authorsService.removeAuthorById(id);
   }
 }

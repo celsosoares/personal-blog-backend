@@ -17,27 +17,32 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  findAll(): Promise<PostDto[]> {
-    return this.postsService.findAll();
+  getPosts(): Promise<PostDto[]> {
+    return this.postsService.getPosts();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postsService.findOne(id);
+  getPostById(@Param('id') id: string) {
+    return this.postsService.getPostById(id);
+  }
+
+  @Get('author/:id')
+  getPostsByAuthorId(@Param('id') id: string) {
+    return this.postsService.getPostsByAuthorId(id);
   }
 
   @Post()
-  create(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.create(createPostDto);
+  createPost(@Body() createPostDto: CreatePostDto) {
+    return this.postsService.createPost(createPostDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postsService.update(id, updatePostDto);
+  updatePost(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+    return this.postsService.updatePost(id, updatePostDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.postsService.remove(id);
+  removePostById(@Param('id') id: string) {
+    return this.postsService.removePostById(id);
   }
 }

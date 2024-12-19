@@ -17,12 +17,12 @@ export class PostsService {
     private authorsRepository: Repository<Author>,
   ) {}
 
-  async findAll(): Promise<PostDto[]> {
+  async getPosts(): Promise<PostDto[]> {
     const result = await this.postsRepository.find();
     return plainToInstance(PostDto, result, { excludeExtraneousValues: true });
   }
 
-  async findOne(id: string) {
+  async getPostById(id: string) {
     const post = await this.postsRepository.findOneBy({ id });
     if (!post) {
       throw new NotFoundException(`Post ID ${id} not found`);
@@ -30,7 +30,19 @@ export class PostsService {
     return post;
   }
 
-  async create(createPostDto: CreatePostDto) {
+  async getPostsByAuthorId(authorId: string): Promise<PostDto[]> {
+    const posts = await this.postsRepository.find({
+      where: { author: { id: authorId } },
+    });
+
+    if (!posts.length) {
+      throw new NotFoundException(`No posts found for author ID ${authorId}`);
+    }
+
+    return posts;
+  }
+
+  async createPost(createPostDto: CreatePostDto) {
     const { authorId, ...postData } = createPostDto;
 
     const author = await this.authorsRepository.findOneBy({ id: authorId });
@@ -46,7 +58,7 @@ export class PostsService {
     return this.postsRepository.save(post);
   }
 
-  async update(id: string, updatePostDto: UpdatePostDto) {
+  async updatePost(id: string, updatePostDto: UpdatePostDto) {
     const post = await this.postsRepository.preload({
       ...updatePostDto,
       id,
@@ -57,7 +69,7 @@ export class PostsService {
     return this.postsRepository.save(post);
   }
 
-  async remove(id: string) {
+  async removePostById(id: string) {
     return await this.postsRepository.delete(id);
   }
 }
